@@ -17,10 +17,10 @@ import java.util.Map;
 @Service
 @Slf4j
 public class StatClient extends BaseClient {
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
-    public static final String HIT_API_PREFIX = "/hit";
-    public static final String STATS_API_PREFIX = "/stats";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final String HIT_API_PREFIX = "/hit";
+    private static final String STATS_API_PREFIX = "/stats";
 
     @Autowired
     public StatClient(@Value("${stat-server.url}") String serverUrl, RestTemplateBuilder builder) {

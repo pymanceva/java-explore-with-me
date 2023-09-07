@@ -18,19 +18,19 @@ public class EndpointHit {
     @Id
     @Column(name = "endpoint_hit_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "app")
-    String app;
+    private String app;
 
     @Column(name = "uri")
-    String uri;
+    private String uri;
 
     @Column(name = "ip")
-    String ip;
+    private String ip;
 
     @Column(name = "time_stamp")
-    LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 
     @Generated
     @Override
