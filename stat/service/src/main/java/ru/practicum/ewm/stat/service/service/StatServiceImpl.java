@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.stat.dto.EndpointHitDto;
 import ru.practicum.ewm.stat.dto.ViewStatDto;
+import ru.practicum.ewm.stat.service.exception.BadRequestException;
 import ru.practicum.ewm.stat.service.exception.NotSavedException;
 import ru.practicum.ewm.stat.service.mapper.EndpointHitMapper;
 import ru.practicum.ewm.stat.service.mapper.ViewStatMapper;
@@ -39,6 +40,11 @@ public class StatServiceImpl implements StatService {
     @Override
     @Transactional(readOnly = true)
     public List<ViewStatDto> getViewStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (start != null && end != null) {
+            if (end.isBefore(start)) {
+                throw new BadRequestException("End before start");
+            }
+        }
         if (uris.isEmpty()) {
             log.info("List of ViewStats for empty URIs has been gotten.");
             return ViewStatMapper.mapToViewStatDto(repository.getViewStats(start, end));
