@@ -13,7 +13,7 @@ import java.util.LinkedList;
 @NoArgsConstructor
 public class EventRequestStatusUpdateRequest {
     @NotNull
-    LinkedList<Long> requestIds;
+    private LinkedList<Long> requestIds;
     @NotNull
-    RequestState status;
+    private RequestState status;
 }

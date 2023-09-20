@@ -21,17 +21,17 @@ public class ParticipationRequest {
     private Long id;
 
     @Column(name = "request_created")
-    LocalDateTime created;
+    private LocalDateTime created;
 
     @ManyToOne
     @JoinColumn(name = "request_event_id")
-    Event event;
+    private Event event;
 
     @ManyToOne
     @JoinColumn(name = "request_requester_id")
-    User requester;
+    private User requester;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "request_state")
-    RequestState state;
+    private RequestState state;
 }
