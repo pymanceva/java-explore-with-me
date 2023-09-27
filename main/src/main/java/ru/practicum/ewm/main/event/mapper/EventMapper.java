@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.main.category.model.Category;
 import ru.practicum.ewm.main.category.model.dto.CategoryDto;
 import ru.practicum.ewm.main.category.model.mapper.CategoryMapper;
+import ru.practicum.ewm.main.comment.dto.CommentDto;
 import ru.practicum.ewm.main.event.dto.EventFullDto;
 import ru.practicum.ewm.main.event.dto.EventShortDto;
 import ru.practicum.ewm.main.event.dto.NewEventDto;
@@ -43,7 +44,8 @@ public class EventMapper {
                                           Long confirmedRequests,
                                           UserShortDto userShortDto,
                                           NewLocationDto newLocationDto,
-                                          Long views) {
+                                          Long views,
+                                          List<CommentDto> comments) {
 
         EventFullDto result = new EventFullDto();
 
@@ -63,6 +65,7 @@ public class EventMapper {
         result.setState(event.getState());
         result.setTitle(event.getTitle());
         result.setViews(views);
+        result.setComments(comments);
 
         return result;
     }
@@ -110,13 +113,15 @@ public class EventMapper {
                     0L,
                     UserMapper.mapToUserShortDto(event.getInitiator()),
                     LocationMapper.mapToNewLocationDto(event.getLocation()),
-                    0L));
+                    0L, null));
         }
 
         return result;
     }
 
-    public static List<EventFullDto> mapToEventFullDto(Iterable<Event> events, Map<String, Long> views) {
+    public static List<EventFullDto> mapToEventFullDto(Iterable<Event> events,
+                                                       Map<String, Long> views,
+                                                       List<CommentDto> comments) {
         List<EventFullDto> result = new ArrayList<>();
 
         for (Event event : events) {
@@ -125,7 +130,7 @@ public class EventMapper {
                     0L,
                     UserMapper.mapToUserShortDto(event.getInitiator()),
                     LocationMapper.mapToNewLocationDto(event.getLocation()),
-                    views.get(String.format("/events/" + event.getId()))));
+                    views.get(String.format("/events/" + event.getId())), comments));
         }
 
         return result;

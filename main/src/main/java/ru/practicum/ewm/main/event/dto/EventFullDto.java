@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.main.category.model.dto.CategoryDto;
+import ru.practicum.ewm.main.comment.dto.CommentDto;
 import ru.practicum.ewm.main.event.model.EventState;
 import ru.practicum.ewm.main.location.dto.NewLocationDto;
 import ru.practicum.ewm.main.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,4 +36,5 @@ public class EventFullDto {
     private EventState state;
     private String title;
     private Long views;
+    private List<CommentDto> comments;
 }
