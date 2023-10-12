@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.main.category.model.Category;
 import ru.practicum.ewm.main.category.model.mapper.CategoryMapper;
 import ru.practicum.ewm.main.category.repository.CategoryRepository;
+import ru.practicum.ewm.main.comment.dto.CommentDto;
+import ru.practicum.ewm.main.comment.mapper.CommentMapper;
+import ru.practicum.ewm.main.comment.repository.CommentRepository;
 import ru.practicum.ewm.main.event.controller.EventPublicController;
 import ru.practicum.ewm.main.event.dto.*;
 import ru.practicum.ewm.main.event.mapper.EventMapper;
@@ -56,6 +59,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
     private final ParticipationRequestRepository requestRepository;
+    private final CommentRepository commentRepository;
     private final StatClient statClient;
 
     @Transactional
@@ -95,7 +99,7 @@ public class EventServiceImpl implements EventService {
                     0L,
                     UserMapper.mapToUserShortDto(user),
                     LocationMapper.mapToNewLocationDto(location),
-                    0L);
+                    0L, null);
         } catch (DataIntegrityViolationException e) {
             throw new NotSavedException("Event was not saved.");
         }
@@ -175,7 +179,7 @@ public class EventServiceImpl implements EventService {
                     0L,
                     UserMapper.mapToUserShortDto(event.getInitiator()),
                     LocationMapper.mapToNewLocationDto(event.getLocation()),
-                    0L);
+                    0L, null);
         } catch (DataIntegrityViolationException e) {
             throw new NotSavedException("Event was not saved.");
         }
@@ -200,7 +204,7 @@ public class EventServiceImpl implements EventService {
                 0L,
                 UserMapper.mapToUserShortDto(event.getInitiator()),
                 LocationMapper.mapToNewLocationDto(event.getLocation()),
-                0L);
+                0L, null);
     }
 
     @Override
@@ -315,7 +319,7 @@ public class EventServiceImpl implements EventService {
                     requestRepository.getCountByEventIdAndState(eventId, RequestState.CONFIRMED),
                     UserMapper.mapToUserShortDto(event.getInitiator()),
                     LocationMapper.mapToNewLocationDto(event.getLocation()),
-                    0L);
+                    0L, null);
         } catch (DataIntegrityViolationException e) {
             throw new NotSavedException("Event was not saved.");
         }
@@ -389,9 +393,11 @@ public class EventServiceImpl implements EventService {
 
         Map<String, Long> eventViews = getEventViewsMap(getEventsViewsList(List.of(event), LocalDateTime.MIN, LocalDateTime.MAX));
 
+        List<CommentDto> comments = CommentMapper.mapToCommentDto(commentRepository.findAllByEventId(eventId));
+
         log.info("Public event with id=" + eventId + " has been gotten.");
 
-        return EventMapper.mapToEventFullDto(List.of(event), eventViews).get(0);
+        return EventMapper.mapToEventFullDto(List.of(event), eventViews, comments).get(0);
     }
 
     @Override
